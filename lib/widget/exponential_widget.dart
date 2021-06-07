@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:technical_indicators/widget/custom_header.dart';
 import 'package:technical_indicators/widget/expoDataView.dart';
 
-class ExponentialWidget extends StatefulWidget {
-  @override
-  _ExponentialWidgetState createState() => _ExponentialWidgetState();
-}
-
-class _ExponentialWidgetState extends State<ExponentialWidget> {
+class ExponentialWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +11,7 @@ class _ExponentialWidgetState extends State<ExponentialWidget> {
         vertical: 10,
       ),
       child: Column(
-        children: <Widget>[
+        children: [
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(

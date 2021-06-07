@@ -29,6 +29,5 @@ class Oscillators extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

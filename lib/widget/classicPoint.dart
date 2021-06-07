@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:technical_indicators/model/classicPoint_model.dart';
+import 'package:provider/provider.dart';
+import 'package:technical_indicators/dataProvider/data_provider.dart';
 
 class ClassicDataView extends StatefulWidget {
   @override
@@ -7,52 +8,41 @@ class ClassicDataView extends StatefulWidget {
 }
 
 class _ClassicDataViewState extends State<ClassicDataView> {
-  late List<ClassicPoint> classicData = [];
-
   @override
   void initState() {
     super.initState();
-    classicData = [
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-      ClassicPoint(id: 'S3', value: 465.55),
-    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(15),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemBuilder: (ctx, i) {
-          return Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  classicData[i].id,
-                  textAlign: TextAlign.start,
-                ),
-                Text(
-                  '${classicData[i].value}',
-                  textAlign: TextAlign.end,
-                ),
-              ],
-            ),
-          );
-        },
-        itemCount: classicData.length,
-      ),
-    );
+    return Consumer<DataProvider>(builder: (ctx, classic, _) {
+      return Container(
+        padding: EdgeInsets.all(15),
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemBuilder: (ctx, i) {
+            return Container(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    classic.classicData[i].id,
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    classic.classicData[i].value,
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+            );
+          },
+          itemCount: classic.classicData.length,
+        ),
+      );
+    });
   }
 }

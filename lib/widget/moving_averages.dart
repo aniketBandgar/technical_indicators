@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:technical_indicators/dataProvider/data_provider.dart';
+
+enum Action {
+  StrongBuy,
+  BUY,
+  Neutral,
+  Sell,
+  StrongSell,
+}
 
 class MovingAverages extends StatefulWidget {
   @override
@@ -14,20 +24,23 @@ class _MovingAveragesState extends State<MovingAverages> {
     Color.fromRGBO(255, 46, 80, 1),
   ];
 
-  final List<String> _period = [
-    '1 MIN',
-    '5 MIN',
-    '15 MIN',
-    '30 MIN',
-    '1 HR',
-    '5 HR',
-    '1 DAY',
-    '1 WK',
-    '1 MON',
+  final List<Map<String, String>> _period = [
+    {'period': '1 MIN', 'json': '1min'},
+    {'period': '5 MIN', 'json': '5min'},
+    {'period': '15 MIN', 'json': '15min'},
+    {'period': '30 MIN', 'json': '30min'},
+    {'period': '1 HR', 'json': '1hour'},
+    {'period': '5 HR', 'json': '5hour'},
+    {'period': '1 DAY', 'json': 'daily'},
+    {'period': '1 WK', 'json': 'weekly'},
+    {'period': '1 MON', 'json': 'monthly'},
   ];
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    var dataProvider = Provider.of<DataProvider>(context);
     return Container(
       padding: EdgeInsets.all(10),
       child: Row(
@@ -46,27 +59,42 @@ class _MovingAveragesState extends State<MovingAverages> {
                   .toList(),
             ),
           ),
-          Column(
-            children: _period
-                .map((e) => GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: 40,
-                        width: 70,
-                        padding: EdgeInsets.all(8),
-                        margin: EdgeInsets.only(top: 8),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 0.5, color: Colors.white),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                          child: Text(
-                            e,
-                          ),
+          Container(
+            height: 450,
+            width: 80,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemBuilder: (ctx, i) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() => _selectedIndex = i);
+                    dataProvider
+                        .onSelectingPeriod(_period[i]['json'].toString());
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 70,
+                    padding: EdgeInsets.all(8),
+                    margin: EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          width: _selectedIndex == i ? 1 : 0.5,
+                          color:
+                              _selectedIndex == i ? Colors.white : Colors.grey,
                         ),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        _period[i]['period'].toString(),
                       ),
-                    ))
-                .toList(),
-          )
+                    ),
+                  ),
+                );
+              },
+              itemCount: _period.length,
+            ),
+          ),
         ],
       ),
     );

@@ -1,5 +1,5 @@
 class ClassicPoint {
   final String id;
-  final double value;
+  final String value;
   ClassicPoint({required this.id, required this.value});
 }
